@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+:root {
+  --color-cream: #ffffff;
+  --color-cream-dark: #f2f6f2;
+  --color-forest: #2f4536;
+  --color-forest-dark: #1d2c22;
+  --color-sage: #7c9473;
+  --color-sage-light: #a9bd9d;
+  --color-terracotta: #3f8a4a;
+  --color-terracotta-dark: #2f6d39;
+  --color-charcoal: #2b2620;
+  --color-charcoal-soft: #55503f;
+}
+
+@theme inline {
+  --color-cream: var(--color-cream);
+  --color-cream-dark: var(--color-cream-dark);
+  --color-forest: var(--color-forest);
+  --color-forest-dark: var(--color-forest-dark);
+  --color-sage: var(--color-sage);
+  --color-sage-light: var(--color-sage-light);
+  --color-terracotta: var(--color-terracotta);
+  --color-terracotta-dark: var(--color-terracotta-dark);
+  --color-charcoal: var(--color-charcoal);
+  --color-charcoal-soft: var(--color-charcoal-soft);
+
+  --font-sans:
+    "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic",
+    ui-sans-serif, system-ui, sans-serif;
+  --font-serif:
+    "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP",
+    ui-serif, serif;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+}
+
+::selection {
+  background: var(--color-terracotta);
+  color: white;
+}
