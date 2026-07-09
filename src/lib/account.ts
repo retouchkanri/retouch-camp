@@ -1,10 +1,12 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isSupabaseAdminConfigured, isSupabaseConfigured } from "@/lib/supabase/env";
 import type { BookingWithRelations, Profile } from "@/types/database";
 
 /** The logged-in user's own profile, read via the request-scoped (RLS-checked) client. */
 export async function getCurrentProfile(): Promise<{ userId: string; profile: Profile } | null> {
+  if (!isSupabaseConfigured()) return null;
   const supabase = await createClient();
   const {
     data: { user },
@@ -18,6 +20,7 @@ export async function getCurrentProfile(): Promise<{ userId: string; profile: Pr
 }
 
 export async function getBookingsForUser(userId: string, email: string): Promise<BookingWithRelations[]> {
+  if (!isSupabaseAdminConfigured()) return [];
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("bookings")

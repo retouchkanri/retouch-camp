@@ -3,6 +3,7 @@ import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { LinkButton } from "@/components/ui/Button";
 import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
 import type { Review } from "@/types/database";
 
 const EXPERIENCES = [
@@ -29,6 +30,8 @@ const EXPERIENCES = [
 ];
 
 async function getPublishedReviews(): Promise<Review[]> {
+  if (!isSupabaseConfigured()) return [];
+
   try {
     const supabase = await createClient();
     const { data } = await supabase

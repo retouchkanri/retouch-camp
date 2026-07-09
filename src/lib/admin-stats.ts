@@ -1,5 +1,6 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isSupabaseAdminConfigured } from "@/lib/supabase/env";
 import { getMaxGroupsPerDay } from "@/lib/booking";
 import type { Booking, BookingOption, ExperienceOption } from "@/types/database";
 
@@ -19,6 +20,21 @@ function countBy<T extends string>(items: (T | null)[], fallback = "未回答") 
 }
 
 export async function getMonthlyReport(reference = new Date()) {
+  const monthLabel = reference.toLocaleDateString("ja-JP", { year: "numeric", month: "long" });
+  if (!isSupabaseAdminConfigured()) {
+    return {
+      monthLabel,
+      bookings: [] as Booking[],
+      byStatus: { pending: 0, approved: 0, rejected: 0, cancelled: 0 },
+      revenue: 0,
+      totalGuests: 0,
+      avgSatisfaction: null,
+      regionBreakdown: [] as [string, number][],
+      groupTypeBreakdown: [] as [string, number][],
+      referralBreakdown: [] as [string, number][],
+      repeatIntentionBreakdown: [] as [string, number][],
+    };
+  }
   const supabase = createAdminClient();
   const { start, end } = monthRange(reference);
 
@@ -69,6 +85,19 @@ export async function getMonthlyReport(reference = new Date()) {
 }
 
 export async function getDashboardStats(reference = new Date()) {
+  const monthLabel = reference.toLocaleDateString("ja-JP", { year: "numeric", month: "long" });
+  if (!isSupabaseAdminConfigured()) {
+    return {
+      monthLabel,
+      totalBookings: 0,
+      confirmedBookings: 0,
+      pendingCount: 0,
+      revenue: 0,
+      occupancyRate: 0,
+      groupTypeCounts: {},
+      optionCounts: [] as { option: ExperienceOption; count: number }[],
+    };
+  }
   const supabase = createAdminClient();
   const { start, end } = monthRange(reference);
 

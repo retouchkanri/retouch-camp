@@ -1,5 +1,10 @@
 import "server-only";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import {
+  getSupabaseServiceRoleKey,
+  getSupabaseUrl,
+  isSupabaseAdminConfigured,
+} from "@/lib/supabase/env";
 
 /**
  * Privileged Supabase client using the service-role (secret) key. Bypasses RLS entirely.
@@ -7,9 +12,13 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js";
  * the `server-only` import throws a build error if this ever ends up in a client bundle.
  */
 export function createAdminClient() {
-  return createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } },
-  );
+  if (!isSupabaseAdminConfigured()) {
+    throw new Error(
+      "Supabase admin client is not configured. Set NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, and SUPABASE_SERVICE_ROLE_KEY.",
+    );
+  }
+
+  return createSupabaseClient(getSupabaseUrl(), getSupabaseServiceRoleKey(), {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
 }

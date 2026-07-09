@@ -8,6 +8,8 @@ import { ProfileNameForm } from "@/components/account/ProfileNameForm";
 import { LogoutButton } from "@/components/account/LogoutButton";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = { title: "マイページ" };
 
 export default async function MyPage() {
@@ -24,7 +26,7 @@ export default async function MyPage() {
           <LogoutButton />
         </div>
 
-        <div className="rounded-2xl bg-white p-6 shadow-sm">
+        <div id="profile" className="scroll-mt-24 rounded-2xl bg-white p-6 shadow-sm">
           <h2 className="font-serif text-base font-semibold text-forest-dark">プロフィール</h2>
           <div className="mt-4">
             <AvatarUpload userId={current.userId} avatarUrl={current.profile.avatar_url} />

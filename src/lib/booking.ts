@@ -1,10 +1,12 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isSupabaseAdminConfigured } from "@/lib/supabase/env";
 import type { BookingWithRelations, ExperienceOption, SiteType } from "@/types/database";
 
 export const DEFAULT_MAX_GROUPS_PER_DAY = 4;
 
 export async function getMaxGroupsPerDay(): Promise<number> {
+  if (!isSupabaseAdminConfigured()) return DEFAULT_MAX_GROUPS_PER_DAY;
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("site_settings")
@@ -16,6 +18,7 @@ export async function getMaxGroupsPerDay(): Promise<number> {
 }
 
 export async function countActiveBookingsForDate(date: string): Promise<number> {
+  if (!isSupabaseAdminConfigured()) return 0;
   const supabase = createAdminClient();
   const { count } = await supabase
     .from("bookings")
@@ -31,6 +34,7 @@ export async function getAvailabilityForDate(date: string) {
 }
 
 export async function getActiveSiteTypes(): Promise<SiteType[]> {
+  if (!isSupabaseAdminConfigured()) return [];
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("site_types")
@@ -41,6 +45,7 @@ export async function getActiveSiteTypes(): Promise<SiteType[]> {
 }
 
 export async function getActiveExperienceOptions(): Promise<ExperienceOption[]> {
+  if (!isSupabaseAdminConfigured()) return [];
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("experience_options")
@@ -59,6 +64,7 @@ export function computeOptionQuantity(
 }
 
 export async function listBookings(filters: { status?: string } = {}): Promise<BookingWithRelations[]> {
+  if (!isSupabaseAdminConfigured()) return [];
   const supabase = createAdminClient();
   let query = supabase
     .from("bookings")
@@ -72,6 +78,7 @@ export async function listBookings(filters: { status?: string } = {}): Promise<B
 }
 
 export async function getBookingsInRange(start: string, end: string): Promise<BookingWithRelations[]> {
+  if (!isSupabaseAdminConfigured()) return [];
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("bookings")
@@ -84,6 +91,7 @@ export async function getBookingsInRange(start: string, end: string): Promise<Bo
 }
 
 export async function getBookingById(id: string): Promise<BookingWithRelations | null> {
+  if (!isSupabaseAdminConfigured()) return null;
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("bookings")
@@ -96,6 +104,7 @@ export async function getBookingById(id: string): Promise<BookingWithRelations |
 export async function getBookingByCancelToken(
   token: string,
 ): Promise<BookingWithRelations | null> {
+  if (!isSupabaseAdminConfigured()) return null;
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("bookings")

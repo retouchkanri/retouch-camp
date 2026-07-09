@@ -4,6 +4,8 @@ import { BookingForm } from "@/components/sections/BookingForm";
 import { getActiveSiteTypes, getActiveExperienceOptions } from "@/lib/booking";
 import { getCurrentProfile } from "@/lib/account";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = { title: "ご予約" };
 
 export default async function BookingPage() {

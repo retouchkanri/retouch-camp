@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MAIN_NAV, FACILITY_NAME, FACILITY_NAME_JA } from "@/lib/nav";
 import { createClient } from "@/lib/supabase/client";
+import { UserMenu } from "./UserMenu";
 
 export function Header() {
   const pathname = usePathname();
@@ -45,35 +46,36 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-4 lg:flex">
-          <Link
-            href={loggedIn ? "/mypage" : "/login"}
-            className="text-sm text-charcoal transition-colors hover:text-terracotta"
-          >
-            {loggedIn ? "マイページ" : "ログイン"}
-          </Link>
-          <Link
-            href="/booking"
-            className="inline-flex items-center rounded-full bg-terracotta px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-terracotta-dark"
-          >
-            予約する
-          </Link>
+          {loggedIn ? (
+            <UserMenu />
+          ) : (
+            <Link
+              href="/login"
+              className="text-sm text-charcoal transition-colors hover:text-terracotta"
+            >
+              ログイン
+            </Link>
+          )}
         </div>
 
-        <button
-          type="button"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-sage/40 lg:hidden"
-          aria-label="メニューを開く"
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.8}>
-            {open ? (
-              <path strokeLinecap="round" d="M6 6l12 12M18 6L6 18" />
-            ) : (
-              <path strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16" />
-            )}
-          </svg>
-        </button>
+        <div className="flex items-center gap-2 lg:hidden">
+          {loggedIn && <UserMenu />}
+          <button
+            type="button"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-sage/40"
+            aria-label="メニューを開く"
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.8}>
+              {open ? (
+                <path strokeLinecap="round" d="M6 6l12 12M18 6L6 18" />
+              ) : (
+                <path strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16" />
+              )}
+            </svg>
+          </button>
+        </div>
       </div>
 
       {open && (
@@ -93,20 +95,15 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <Link
-              href={loggedIn ? "/mypage" : "/login"}
-              onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-2.5 text-sm text-charcoal"
-            >
-              {loggedIn ? "マイページ" : "ログイン"}
-            </Link>
-            <Link
-              href="/booking"
-              onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center rounded-full bg-terracotta px-5 py-2.5 text-sm font-medium text-white"
-            >
-              予約する
-            </Link>
+            {!loggedIn && (
+              <Link
+                href="/login"
+                onClick={() => setOpen(false)}
+                className="rounded-lg px-3 py-2.5 text-sm text-charcoal"
+              >
+                ログイン
+              </Link>
+            )}
           </nav>
         </div>
       )}

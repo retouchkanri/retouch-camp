@@ -1,9 +1,13 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isSupabaseAdminConfigured } from "@/lib/supabase/env";
 import { sendEmail, emailLayout } from "@/lib/email";
 import type { Booking, Survey } from "@/types/database";
 
 export async function ensureSurveyForBooking(bookingId: string): Promise<Survey> {
+  if (!isSupabaseAdminConfigured()) {
+    throw new Error("Supabase is not configured.");
+  }
   const supabase = createAdminClient();
   const { data: existing } = await supabase
     .from("surveys")
@@ -24,6 +28,9 @@ export async function ensureSurveyForBooking(bookingId: string): Promise<Survey>
 }
 
 export async function sendSurveyForBooking(bookingId: string) {
+  if (!isSupabaseAdminConfigured()) {
+    throw new Error("Supabase is not configured.");
+  }
   const supabase = createAdminClient();
   const { data: booking } = await supabase
     .from("bookings")
@@ -54,6 +61,7 @@ export async function sendSurveyForBooking(bookingId: string) {
 }
 
 export async function getSurveyByToken(token: string) {
+  if (!isSupabaseAdminConfigured()) return null;
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("surveys")
@@ -64,6 +72,7 @@ export async function getSurveyByToken(token: string) {
 }
 
 export async function listSurveysWithBookings() {
+  if (!isSupabaseAdminConfigured()) return [];
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("surveys")

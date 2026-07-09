@@ -16,6 +16,7 @@ export function DeleteUserButton({ userId, disabled }: { userId: string; disable
         alert((await res.json()).error || "削除に失敗しました。");
         return;
       }
+      router.push("/admin/users");
       router.refresh();
     } finally {
       setBusy(false);

@@ -1,19 +1,18 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { getAdminUser } from "@/lib/admin-auth";
 import { AdminSidebarNav } from "@/components/admin/AdminSidebarNav";
 import { AdminMobileNav } from "@/components/admin/AdminMobileNav";
 import { LogoutButton } from "@/components/admin/LogoutButton";
 import { FACILITY_NAME } from "@/lib/nav";
+
+export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAdminUser();
 
   return (
     <div className="flex min-h-screen bg-cream">

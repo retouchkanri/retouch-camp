@@ -40,7 +40,7 @@ export async function POST(request: Request) {
   // make sure the role matches even if metadata handling ever changes.
   await supabase
     .from("profiles")
-    .update({ role: parsed.data.role, full_name: parsed.data.full_name })
+    .update({ role: parsed.data.role, full_name: parsed.data.full_name, email: parsed.data.email })
     .eq("id", data.user.id);
 
   return NextResponse.json({ ok: true, id: data.user.id }, { status: 201 });

@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
+import { FloatingActionButtons } from "./FloatingActionButtons";
 import { BackToTopButton } from "@/components/ui/BackToTopButton";
 
 export function SiteChrome({ children }: { children: React.ReactNode }) {
@@ -16,6 +17,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
+      <FloatingActionButtons />
       <BackToTopButton />
     </>
   );
