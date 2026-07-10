@@ -11,7 +11,13 @@ export async function POST(
 
   const { id } = await params;
   try {
-    await sendSurveyForBooking(id);
+    const { sent } = await sendSurveyForBooking(id);
+    if (!sent) {
+      return NextResponse.json(
+        { error: "メールを送信できませんでした。メール設定をご確認ください。" },
+        { status: 502 },
+      );
+    }
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("send-survey failed", err);

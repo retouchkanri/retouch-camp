@@ -61,12 +61,22 @@ export default function PricingPage() {
                 <td className="px-6 py-4">1,000円 / 組</td>
               </tr>
               <tr>
-                <td className="px-6 py-4 font-medium text-forest-dark">記念写真撮影</td>
+                <td className="px-6 py-4 font-medium text-forest-dark">馬の写真撮影</td>
                 <td className="px-6 py-4">3,000円 / 組</td>
               </tr>
               <tr>
-                <td className="px-6 py-4 font-medium text-forest-dark">BBQセット</td>
+                <td className="px-6 py-4 font-medium text-forest-dark">バーベキュー（食材・機材付き）</td>
                 <td className="px-6 py-4">4,500円 / 人</td>
+              </tr>
+              <tr>
+                <td className="px-6 py-4 font-medium text-forest-dark">ポニーのお手入れ体験</td>
+                <td className="px-6 py-4">1,500円 / 組</td>
+              </tr>
+              <tr>
+                <td className="px-6 py-4 font-medium text-forest-dark">
+                  星空を眺めながらのんびり過ごす時間
+                </td>
+                <td className="px-6 py-4">1,000円 / 組</td>
               </tr>
             </tbody>
           </table>

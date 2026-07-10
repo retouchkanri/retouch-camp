@@ -10,6 +10,37 @@ const StatusSchema = z.object({
   admin_memo: z.string().max(2000).optional(),
 });
 
+const MemoSchema = z.object({
+  admin_memo: z.string().max(2000),
+});
+
+/** Memo-only update — works for any status and triggers no emails/surveys. */
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const user = await getAdminUser();
+  if (!user) return NextResponse.json({ error: "認証が必要です。" }, { status: 401 });
+
+  const { id } = await params;
+  const json = await request.json().catch(() => null);
+  const parsed = MemoSchema.safeParse(json);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "入力内容をご確認ください。" }, { status: 400 });
+  }
+
+  const supabase = createAdminClient();
+  const { error } = await supabase
+    .from("bookings")
+    .update({ admin_memo: parsed.data.admin_memo })
+    .eq("id", id);
+  if (error) {
+    console.error("booking memo update failed", error);
+    return NextResponse.json({ error: "保存に失敗しました。" }, { status: 500 });
+  }
+  return NextResponse.json({ ok: true });
+}
+
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -27,6 +58,15 @@ export async function POST(
   const supabase = createAdminClient();
   const { data: booking } = await supabase.from("bookings").select("*").eq("id", id).single();
   if (!booking) return NextResponse.json({ error: "予約が見つかりませんでした。" }, { status: 404 });
+
+  // Approve/reject applies to pending bookings only — prevents double-clicks or
+  // stale tabs from re-sending decision emails and resetting approval metadata.
+  if (booking.status !== "pending") {
+    return NextResponse.json(
+      { error: "この予約はすでに処理済みです。ページを再読み込みしてください。" },
+      { status: 409 },
+    );
+  }
 
   const update: Record<string, unknown> = { status: parsed.data.status };
   if (parsed.data.admin_memo !== undefined) update.admin_memo = parsed.data.admin_memo;

@@ -5,6 +5,37 @@ import type { BookingWithRelations, ExperienceOption, SiteType } from "@/types/d
 
 export const DEFAULT_MAX_GROUPS_PER_DAY = 4;
 
+const ACTIVE_STATUSES = ["pending", "approved"];
+// How far back a stay could start and still overlap a target date. Nights are
+// capped at 3 in the form/API; 30 leaves ample headroom if that cap grows.
+const MAX_STAY_LOOKBACK_DAYS = 30;
+
+function addDaysISO(date: string, days: number): string {
+  const d = new Date(`${date}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
+type ActiveStay = { stay_date: string; nights: number };
+
+async function fetchActiveStaysAround(rangeStart: string, rangeEnd: string): Promise<ActiveStay[]> {
+  if (!isSupabaseAdminConfigured()) return [];
+  const supabase = createAdminClient();
+  const { data } = await supabase
+    .from("bookings")
+    .select("stay_date, nights")
+    .in("status", ACTIVE_STATUSES)
+    .gte("stay_date", addDaysISO(rangeStart, -MAX_STAY_LOOKBACK_DAYS))
+    .lte("stay_date", rangeEnd);
+  return (data as ActiveStay[]) ?? [];
+}
+
+function countStaysOverlapping(stays: ActiveStay[], date: string): number {
+  return stays.filter(
+    (s) => s.stay_date <= date && addDaysISO(s.stay_date, Math.max(1, s.nights)) > date,
+  ).length;
+}
+
 export async function getMaxGroupsPerDay(): Promise<number> {
   if (!isSupabaseAdminConfigured()) return DEFAULT_MAX_GROUPS_PER_DAY;
   const supabase = createAdminClient();
@@ -18,19 +49,37 @@ export async function getMaxGroupsPerDay(): Promise<number> {
 }
 
 export async function countActiveBookingsForDate(date: string): Promise<number> {
-  if (!isSupabaseAdminConfigured()) return 0;
-  const supabase = createAdminClient();
-  const { count } = await supabase
-    .from("bookings")
-    .select("id", { count: "exact", head: true })
-    .eq("stay_date", date)
-    .in("status", ["pending", "approved"]);
-  return count ?? 0;
+  const stays = await fetchActiveStaysAround(date, date);
+  return countStaysOverlapping(stays, date);
 }
 
 export async function getAvailabilityForDate(date: string) {
   const [max, used] = await Promise.all([getMaxGroupsPerDay(), countActiveBookingsForDate(date)]);
   return { date, max, used, remaining: Math.max(0, max - used) };
+}
+
+/**
+ * Availability across every night of a stay: `remaining` is the minimum over
+ * all nights, `fullDate` the first night that is fully booked (if any). This
+ * is a best-effort pre-check for UX; the authoritative guard is the
+ * enforce_booking_capacity trigger (migration 0003).
+ */
+export async function getAvailabilityForStay(stayDate: string, nights: number) {
+  const lastNight = addDaysISO(stayDate, Math.max(1, nights) - 1);
+  const [max, stays] = await Promise.all([
+    getMaxGroupsPerDay(),
+    fetchActiveStaysAround(stayDate, lastNight),
+  ]);
+  let remaining = max;
+  let fullDate: string | null = null;
+  for (let i = 0; i < Math.max(1, nights); i++) {
+    const night = addDaysISO(stayDate, i);
+    const nightRemaining = max - countStaysOverlapping(stays, night);
+    if (nightRemaining < remaining) remaining = nightRemaining;
+    if (nightRemaining <= 0 && !fullDate) fullDate = night;
+  }
+  remaining = Math.max(0, remaining);
+  return { date: stayDate, nights, max, used: max - remaining, remaining, fullDate };
 }
 
 export async function getActiveSiteTypes(): Promise<SiteType[]> {

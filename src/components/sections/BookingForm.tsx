@@ -63,7 +63,7 @@ export function BookingForm({
   useEffect(() => {
     if (!stayDate) return;
     let cancelled = false;
-    fetch(`/api/bookings/availability?date=${stayDate}`)
+    fetch(`/api/bookings/availability?date=${stayDate}&nights=${nights}`)
       .then((res) => res.json())
       .then((data) => {
         if (!cancelled) setAvailability(data);
@@ -74,7 +74,7 @@ export function BookingForm({
     return () => {
       cancelled = true;
     };
-  }, [stayDate]);
+  }, [stayDate, nights]);
 
   const selectedSiteType = siteTypes.find((s) => s.id === siteTypeId);
   const selectedOptions = options.filter((o) => optionIds.includes(o.id));

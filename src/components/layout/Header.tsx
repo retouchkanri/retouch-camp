@@ -24,7 +24,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-sage/20 bg-cream/95 backdrop-blur">
-      <div className="flex w-full items-center justify-between px-[5vw] py-4">
+      <div className="flex w-full items-center justify-between px-[5vw] py-0">
         <SiteLogoLink onClick={() => setOpen(false)} />
 
         <nav className="hidden items-center gap-6 lg:flex">

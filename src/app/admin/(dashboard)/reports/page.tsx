@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getMonthlyReport } from "@/lib/admin-stats";
 import { StatCard } from "@/components/admin/StatCard";
+import { BreakdownList } from "@/components/admin/BreakdownList";
 import { CsvExportButton } from "@/components/admin/CsvExportButton";
 import { GROUP_TYPE_LABEL_JA } from "@/lib/booking-labels";
 
@@ -10,34 +11,6 @@ function parseMonthParam(month?: string) {
     return new Date(Date.UTC(y, m - 1, 1));
   }
   return new Date();
-}
-
-function BreakdownList({
-  title,
-  data,
-  labelMap,
-}: {
-  title: string;
-  data: [string, number][];
-  labelMap?: Record<string, string>;
-}) {
-  return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm">
-      <h2 className="font-serif text-base font-semibold text-forest-dark">{title}</h2>
-      {data.length === 0 ? (
-        <p className="mt-3 text-sm text-charcoal-soft">データがありません。</p>
-      ) : (
-        <ul className="mt-3 space-y-2">
-          {data.map(([key, count]) => (
-            <li key={key} className="flex items-center justify-between text-sm">
-              <span className="text-charcoal-soft">{labelMap?.[key] ?? key}</span>
-              <span className="font-semibold text-forest-dark">{count}件</span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
 }
 
 export default async function AdminReportsPage({
@@ -121,6 +94,7 @@ export default async function AdminReportsPage({
           data={report.groupTypeBreakdown}
           labelMap={GROUP_TYPE_LABEL_JA as Record<string, string>}
         />
+        <BreakdownList title="ご利用目的" data={report.purposeBreakdown} />
         <BreakdownList title="来場きっかけ" data={report.referralBreakdown} />
         <BreakdownList title="リピート意向" data={report.repeatIntentionBreakdown} />
       </div>

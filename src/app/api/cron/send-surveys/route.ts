@@ -53,14 +53,21 @@ export async function GET(request: Request) {
   const toSend = candidates.filter((b) => !alreadySent.has(b.id));
 
   let sent = 0;
+  let failed = 0;
   for (const booking of toSend) {
     try {
-      await sendSurveyForBooking(booking.id);
-      sent += 1;
+      const result = await sendSurveyForBooking(booking.id);
+      if (result.sent) {
+        sent += 1;
+      } else {
+        // Not marked sent_at, so the next cron run retries this booking.
+        failed += 1;
+      }
     } catch (err) {
+      failed += 1;
       console.error(`send-survey failed for booking ${booking.id}`, err);
     }
   }
 
-  return NextResponse.json({ sent, checked: candidates.length });
+  return NextResponse.json({ sent, failed, checked: candidates.length });
 }

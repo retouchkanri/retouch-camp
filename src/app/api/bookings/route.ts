@@ -5,7 +5,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import {
   computeOptionQuantity,
   computeTotalPrice,
-  getAvailabilityForDate,
+  getAvailabilityForStay,
 } from "@/lib/booking";
 import { sendEmail, emailLayout } from "@/lib/email";
 import type { ExperienceOption, SiteType } from "@/types/database";
@@ -61,10 +61,10 @@ export async function POST(request: Request) {
     data: { user: sessionUser },
   } = await sessionClient.auth.getUser();
 
-  const availability = await getAvailabilityForDate(input.stay_date);
+  const availability = await getAvailabilityForStay(input.stay_date, input.nights);
   if (availability.remaining <= 0) {
     return NextResponse.json(
-      { error: "申し訳ございません、選択された日付は満室です。" },
+      { error: "申し訳ございません、ご指定の期間に満室の日が含まれています。" },
       { status: 409 },
     );
   }
@@ -126,6 +126,14 @@ export async function POST(request: Request) {
     .single();
 
   if (insertError || !booking) {
+    // Raised by the enforce_booking_capacity trigger when a concurrent booking
+    // took the last slot between our pre-check and the insert.
+    if (insertError?.message?.includes("BOOKING_CAPACITY_FULL")) {
+      return NextResponse.json(
+        { error: "申し訳ございません、ご指定の期間に満室の日が含まれています。" },
+        { status: 409 },
+      );
+    }
     console.error("booking insert failed", insertError);
     return NextResponse.json({ error: "予約の作成に失敗しました。" }, { status: 500 });
   }

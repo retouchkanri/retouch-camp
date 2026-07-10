@@ -17,20 +17,20 @@ export function SiteLogo({
       width={320}
       height={128}
       priority={priority}
-      className={className}
+      className={`block ${className}`}
     />
   );
 }
 
 export function SiteLogoLink({
-  className = "h-10 w-auto sm:h-11",
+  className = "h-20 w-auto sm:h-22",
   onClick,
 }: {
   className?: string;
   onClick?: () => void;
 }) {
   return (
-    <Link href="/" className="inline-flex shrink-0 items-center" onClick={onClick}>
+    <Link href="/" className="inline-flex shrink-0 leading-none" onClick={onClick}>
       <SiteLogo className={className} priority />
     </Link>
   );

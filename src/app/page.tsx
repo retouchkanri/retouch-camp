@@ -18,14 +18,24 @@ const EXPERIENCES = [
     hint: "馬に餌を差し出すゲストの手元・表情のクローズアップ",
   },
   {
-    title: "記念写真撮影",
-    desc: "馬たちと過ごした瞬間を、プロカメラマンが写真に残します。",
+    title: "ポニーのお手入れ体験",
+    desc: "ブラッシングなどのお手入れを通じて、ポニーのお世話を体験できます。",
+    hint: "ゲストがスタッフと一緒にポニーをお手入れする様子",
+  },
+  {
+    title: "馬の写真撮影",
+    desc: "馬たちと過ごした瞬間を、写真に残します。",
     hint: "bajigaku.net のような馬とゲストのポートレート風カット",
   },
   {
-    title: "BBQ体験",
-    desc: "牧場の空気の中、緑に囲まれてゆったり味わうBBQディナー。",
-    hint: "焚き火・BBQグリルと夕暮れの牧場風景",
+    title: "バーベキュー",
+    desc: "牧場の空気の中、緑に囲まれてゆったり味わうバーベキュー。",
+    hint: "BBQグリルと夕暮れの牧場風景",
+  },
+  {
+    title: "星空を眺めながらのんびり過ごす時間",
+    desc: "夜は、静かな牧場で星空を眺めながらのんびりと。",
+    hint: "夜のサイトから見上げる星空と、シルエットになった馬たち",
   },
 ];
 
@@ -60,12 +70,17 @@ export default async function HomePage() {
               1日4組限定・完全予約制
             </p>
             <h1 className="font-serif text-3xl leading-snug font-semibold text-forest-dark sm:text-4xl lg:text-5xl">
-              一泊が、
+              馬と過ごす、
               <br />
-              引退馬の未来につながる。
+              小さな休日。
             </h1>
-            <p className="mt-6 max-w-md text-sm leading-relaxed text-charcoal-soft sm:text-base">
-              大阪府河内長野市。豊かな緑に囲まれたホースガーデンで、ポニーとのふれあいや餌やり、BBQを楽しむ一泊二日。ここでの滞在は、引退した競走馬たちを支える活動へとつながっています。
+            <p className="mt-4 font-serif text-sm tracking-wide text-forest-dark">
+              大阪府河内長野市・千葉県八街市。
+            </p>
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-charcoal-soft sm:text-base">
+              ここは、大きなキャンプ場ではありません。
+              <br />
+              1日4組限定。真ん中にはポニーたちがのんびり暮らす放牧場。その周りに、小さな宿泊サイトが並びます。
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <LinkButton href="/booking" variant="primary">
@@ -91,15 +106,15 @@ export default async function HomePage() {
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <ImagePlaceholder
             label="施設全景"
-            description="キャンピングカーサイトとフリーサイト、ポニーパドックが見渡せる俯瞰写真。"
+            description="中央のポニー放牧場と、それを囲むキャンピングカーサイト・フリーサイトが見渡せる俯瞰写真。"
             sourceHint="引退馬の森／horserest.jp の牧場全景写真の雰囲気"
             aspect="square"
           />
           <div>
             <SectionHeading
               eyebrow="Concept"
-              title="馬と、人と、緑と。ゆっくり流れる時間を。"
-              description="Retouch Horse Gardenは、キャンピングカーサイトとフリーサイトを備えた小さなホースキャンプ場です。馬たちの暮らす牧場のすぐそばで一晩を過ごし、日常から離れてゆったりとした時間を味わっていただけます。1日4組限定だからこそ実現できる、静かで濃密な滞在体験です。"
+              title="馬を眺めながら、泊まる。"
+              description="馬を眺めながらコーヒーを飲む。ゆっくり散歩をする。家族や仲間とバーベキューを楽しむ。ただそれだけの時間が、少し特別な思い出になります。キャンプでもない。牧場でもない。馬と過ごす新しい休日。静かに馬と過ごす滞在型施設です。"
             />
             <LinkButton href="/about" variant="ghost">
               施設コンセプトをもっと見る →
@@ -114,8 +129,8 @@ export default async function HomePage() {
           <div>
             <SectionHeading
               eyebrow="Our Story"
-              title="ここでの一泊が、引退馬たちの新しい居場所をつくる。"
-              description="競走馬としての役目を終えた馬たちは、その後の人生をどう過ごすか、大きな課題を抱えています。Retouch Horse Gardenは、引退馬支援活動「Retouch」とつながる体験型施設。皆さまの宿泊料の一部が、引退馬たちの飼養・リトレーニング費用として活用されます。"
+              title="あなたの一泊が、引退馬の未来につながる。"
+              description="Retouchは、引退競走馬たちの命をつなぐ活動を行っています。私たちは、引退競走馬やポニーたちの新しい活躍の場をつくるため、この小さなホースガーデンをスタートしました。皆さまがここで過ごしてくださる時間が、馬たちの未来を支える力になります。"
             />
             <LinkButton href="/retouch" variant="secondary">
               Retouchの取り組みを見る →
@@ -134,11 +149,11 @@ export default async function HomePage() {
       <Section tone="white">
         <SectionHeading
           eyebrow="Experience"
-          title="馬と過ごす、4つの体験"
-          description="ポニーとのふれあいから、餌やり、写真撮影、BBQまで。滞在中はさまざまな体験オプションをお選びいただけます。"
+          title="お楽しみいただけること"
+          description="ポニーとのふれあい、餌やり体験、ポニーのお手入れ体験、馬の写真撮影、バーベキュー、そして星空を眺めながらのんびり過ごす時間。※安全管理上、焚火・直火は禁止しております。"
           align="center"
         />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {EXPERIENCES.map((exp) => (
             <div key={exp.title} className="flex flex-col gap-4">
               <ImagePlaceholder
@@ -167,37 +182,39 @@ export default async function HomePage() {
       <Section tone="cream">
         <SectionHeading
           eyebrow="Stay"
-          title="2種類の滞在スタイル"
-          description="愛車でそのまま宿泊できるキャンピングカーサイトと、テント派に人気のフリーサイトをご用意しています。"
+          title="1日4組限定・2種類の滞在スタイル"
+          description="中央にはポニーたちの放牧場。どのサイトからも、のんびりと過ごすポニーたちの姿を見ることができます。朝、窓を開けると馬たちが草を食べている。そんな贅沢な時間をお楽しみください。"
         />
         <div className="grid gap-6 sm:grid-cols-2">
           <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
             <ImagePlaceholder
               label="キャンピングカーサイト"
-              description="電源付きサイトに停まったキャンピングカーと、隣接するポニーパドックの様子。"
+              description="設置されたご宿泊用キャンピングカーと、中央のポニー放牧場の様子。"
               aspect="video"
               className="rounded-none border-0"
             />
             <div className="p-6">
               <h3 className="font-serif text-lg font-semibold text-forest-dark">
-                キャンピングカーサイト
+                キャンピングカーサイト（2区画）
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-charcoal-soft">
-                電源付き・愛車のキャンピングカーやトレーラーでそのまま宿泊。ポニーパドックのすぐそばで過ごせます。
+                ご宿泊用キャンピングカーを設置。手軽にアウトドア気分を楽しめます。
               </p>
             </div>
           </div>
           <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
             <ImagePlaceholder
               label="フリーサイト"
-              description="芝生の上にテントとタープを設営し、焚き火を楽しむゲストの様子。"
+              description="芝生の上にテントとタープを設営してくつろぐゲストの様子。"
               aspect="video"
               className="rounded-none border-0"
             />
             <div className="p-6">
-              <h3 className="font-serif text-lg font-semibold text-forest-dark">フリーサイト</h3>
+              <h3 className="font-serif text-lg font-semibold text-forest-dark">
+                フリーサイト（2区画）
+              </h3>
               <p className="mt-2 text-sm leading-relaxed text-charcoal-soft">
-                テント・タープを自由に設営できる芝生サイト。焚き火をしながら牧場の夜を満喫できます。
+                テントやキャンピングカーの持ち込みが可能です。
               </p>
             </div>
           </div>
@@ -234,7 +251,7 @@ export default async function HomePage() {
       <Section tone="forest">
         <div className="flex flex-col items-center gap-6 text-center">
           <h2 className="font-serif text-2xl font-semibold sm:text-3xl">
-            1日4組限定。空いているうちにご予約ください。
+            1日4組だけの、特別なホースガーデン。
           </h2>
           <p className="max-w-xl text-sm leading-relaxed text-charcoal-soft">
             ご希望日の空き状況はご予約ページからすぐに確認できます。ご不明な点はお問い合わせフォームからお気軽にどうぞ。

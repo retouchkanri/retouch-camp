@@ -43,9 +43,9 @@ export function BookingActions({
     setError("");
     try {
       const res = await fetch(`/api/admin/bookings/${bookingId}/status`, {
-        method: "POST",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status, admin_memo: memo }),
+        body: JSON.stringify({ admin_memo: memo }),
       });
       if (!res.ok) throw new Error((await res.json()).error || "保存に失敗しました。");
       router.refresh();

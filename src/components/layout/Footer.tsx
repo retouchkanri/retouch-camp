@@ -12,7 +12,7 @@ export function Footer() {
             {FACILITY_TAGLINE}
           </p>
           <p className="mt-4 text-xs leading-relaxed text-charcoal-soft">
-            大阪府河内長野市｜1日4組限定の完全予約制ホースキャンプ
+            大阪府河内長野市・千葉県八街市｜1日4組限定・完全予約制
           </p>
         </div>
 

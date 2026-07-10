@@ -339,3 +339,114 @@ create policy "avatars: owner delete"
   on storage.objects for delete
   to authenticated
   using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
+
+-- ============================================================================
+-- 0003: Atomic, multi-night booking capacity enforcement
+--
+-- Fixes two correctness holes in the original availability check, which lived
+-- only in application code (check-then-insert, no lock):
+--   1. TOCTOU race — two concurrent requests for the last remaining slot both
+--      passed the app-side check and both inserted, exceeding the daily cap.
+--   2. Multi-night stays only counted against capacity on their first night;
+--      nights 2..N stayed bookable by other groups.
+--
+-- A BEFORE INSERT trigger takes a per-night advisory lock (nights in ascending
+-- order, so concurrent inserts cannot deadlock), then counts every active
+-- booking whose stay range overlaps that night. If any night is full the
+-- insert fails with 'BOOKING_CAPACITY_FULL', which the app maps to a 409.
+--
+-- No UPDATE trigger is needed: the app only ever transitions status toward
+-- inactive (pending -> approved keeps the row counted; rejected/cancelled
+-- release capacity).
+--
+-- Run manually in the Supabase SQL Editor (same as 0001/0002).
+-- ============================================================================
+
+create or replace function public.enforce_booking_capacity()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  max_groups int;
+  night date;
+  used int;
+begin
+  if new.status not in ('pending', 'approved') then
+    return new;
+  end if;
+
+  select (value #>> '{}')::int
+    into max_groups
+    from public.site_settings
+    where key = 'max_groups_per_day';
+  if max_groups is null then
+    max_groups := 4;
+  end if;
+
+  for night in
+    select generate_series(
+      new.stay_date,
+      new.stay_date + (greatest(new.nights, 1) - 1),
+      interval '1 day'
+    )::date
+  loop
+    -- Serialize concurrent inserts touching the same night for this txn.
+    perform pg_advisory_xact_lock(hashtext('booking_capacity'), hashtext(night::text));
+
+    select count(*)
+      into used
+      from public.bookings
+      where status in ('pending', 'approved')
+        and id is distinct from new.id
+        and stay_date <= night
+        and stay_date + greatest(nights, 1) > night;
+
+    if used >= max_groups then
+      raise exception 'BOOKING_CAPACITY_FULL: % is fully booked', night;
+    end if;
+  end loop;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists bookings_enforce_capacity on public.bookings;
+create trigger bookings_enforce_capacity
+  before insert on public.bookings
+  for each row execute function public.enforce_booking_capacity();
+
+-- ============================================================================
+-- 0004: Align experience option display names with the customer's official copy
+--
+-- The customer's approved site copy names the experiences:
+--   ④馬の写真撮影 (was 記念写真撮影), ⑤バーベキュー (was BBQセット)
+-- These name_ja values appear in the booking form and admin booking details,
+-- so the DB seed names must match the site copy.
+--
+-- Run manually in the Supabase SQL Editor (same as 0001-0003).
+-- ============================================================================
+
+update public.experience_options set name_ja = '馬の写真撮影' where code = 'photo';
+update public.experience_options set name_ja = 'バーベキュー' where code = 'bbq';
+
+-- ============================================================================
+-- 0005: Add ③ポニーのお手入れ体験 and ⑥星空を眺めながらのんびり過ごす時間
+-- as paid, bookable experience options.
+--
+-- Both were previously displayed as free/included experiences with no entry
+-- in experience_options (not selectable/priced in the booking flow). Per
+-- customer direction, both are now paid — priced in line with the existing
+-- per-group options (餌やり体験 1,000円, 馬の写真撮影 3,000円):
+--   ・ポニーのお手入れ体験: closer hands-on guided care than 餌やり, 1,500円/組
+--   ・星空を眺めながらのんびり過ごす時間: evening blanket/reclining-chair
+--     setup rental, 1,000円/組
+--
+-- Run manually in the Supabase SQL Editor (same as 0001-0004).
+-- ============================================================================
+
+insert into public.experience_options (code, name_ja, description, price, unit, sort_order) values
+  ('pony_care', 'ポニーのお手入れ体験', 'ブラッシングなどのお手入れを通じて、ポニーのお世話を体験できます。', 1500, 'per_group', 5),
+  ('stargazing', '星空を眺めながらのんびり過ごす時間', 'ブランケットとリクライニングチェアをご用意し、静かな牧場で星空を眺める夜のひとときをお過ごしいただけます。', 1000, 'per_group', 6)
+on conflict (code) do nothing;

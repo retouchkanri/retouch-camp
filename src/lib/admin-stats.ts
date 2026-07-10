@@ -4,6 +4,8 @@ import { isSupabaseAdminConfigured } from "@/lib/supabase/env";
 import { getMaxGroupsPerDay } from "@/lib/booking";
 import type { Booking, BookingOption, ExperienceOption } from "@/types/database";
 
+const WEEKDAY_LABEL_JA = ["日", "月", "火", "水", "木", "金", "土"];
+
 function monthRange(reference = new Date()) {
   const start = new Date(Date.UTC(reference.getUTCFullYear(), reference.getUTCMonth(), 1));
   const end = new Date(Date.UTC(reference.getUTCFullYear(), reference.getUTCMonth() + 1, 1));
@@ -31,6 +33,7 @@ export async function getMonthlyReport(reference = new Date()) {
       avgSatisfaction: null,
       regionBreakdown: [] as [string, number][],
       groupTypeBreakdown: [] as [string, number][],
+      purposeBreakdown: [] as [string, number][],
       referralBreakdown: [] as [string, number][],
       repeatIntentionBreakdown: [] as [string, number][],
     };
@@ -79,6 +82,7 @@ export async function getMonthlyReport(reference = new Date()) {
     avgSatisfaction,
     regionBreakdown: countBy(confirmed.map((b) => b.region)),
     groupTypeBreakdown: countBy(confirmed.map((b) => b.group_type)),
+    purposeBreakdown: countBy(confirmed.map((b) => b.purpose)),
     referralBreakdown: countBy(confirmed.map((b) => b.referral_source)),
     repeatIntentionBreakdown: countBy(confirmed.map((b) => b.repeat_intention)),
   };
@@ -96,12 +100,26 @@ export async function getDashboardStats(reference = new Date()) {
       occupancyRate: 0,
       groupTypeCounts: {},
       optionCounts: [] as { option: ExperienceOption; count: number }[],
+      regionBreakdown: [] as [string, number][],
+      purposeBreakdown: [] as [string, number][],
+      popularWeekdays: [] as [string, number][],
+      popularDates: [] as [string, number][],
+      avgSatisfaction: null as number | null,
+      surveyResponseCount: 0,
+      reviewStats: { published: 0, unpublished: 0 },
     };
   }
   const supabase = createAdminClient();
   const { start, end } = monthRange(reference);
 
-  const [{ data: monthBookings }, { count: pendingCount }, { data: allOptions }] = await Promise.all([
+  const [
+    { data: monthBookings },
+    { count: pendingCount },
+    { data: allOptions },
+    { data: allActiveBookings },
+    { count: publishedReviewCount },
+    { count: unpublishedReviewCount },
+  ] = await Promise.all([
     supabase
       .from("bookings")
       .select("*")
@@ -111,6 +129,11 @@ export async function getDashboardStats(reference = new Date()) {
       .neq("status", "rejected"),
     supabase.from("bookings").select("id", { count: "exact", head: true }).eq("status", "pending"),
     supabase.from("experience_options").select("*"),
+    // All-time (not month-scoped): a single month has too few bookings for a
+    // meaningful "popular dates/weekdays" signal.
+    supabase.from("bookings").select("stay_date").in("status", ["pending", "approved"]),
+    supabase.from("reviews").select("id", { count: "exact", head: true }).eq("published", true),
+    supabase.from("reviews").select("id", { count: "exact", head: true }).eq("published", false),
   ]);
 
   const bookings = (monthBookings as Booking[]) ?? [];
@@ -149,6 +172,29 @@ export async function getDashboardStats(reference = new Date()) {
       .sort((a, b) => b.count - a.count);
   }
 
+  const activeStayDates = ((allActiveBookings as { stay_date: string }[]) ?? []).map(
+    (b) => b.stay_date,
+  );
+  const popularWeekdays = countBy(
+    activeStayDates.map((d) => WEEKDAY_LABEL_JA[new Date(`${d}T00:00:00Z`).getUTCDay()]),
+  );
+  const popularDates = countBy(activeStayDates).slice(0, 5);
+
+  let avgSatisfaction: number | null = null;
+  let surveyResponseCount = 0;
+  if (bookingIds.length > 0) {
+    const { data: surveyRows } = await supabase
+      .from("surveys")
+      .select("satisfaction_score, responded_at, booking_id")
+      .not("responded_at", "is", null)
+      .in("booking_id", bookingIds);
+    const scores = (surveyRows ?? [])
+      .map((s) => s.satisfaction_score as number | null)
+      .filter((s): s is number => s !== null);
+    surveyResponseCount = surveyRows?.length ?? 0;
+    avgSatisfaction = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : null;
+  }
+
   return {
     monthLabel: reference.toLocaleDateString("ja-JP", { year: "numeric", month: "long" }),
     totalBookings: bookings.length,
@@ -158,5 +204,15 @@ export async function getDashboardStats(reference = new Date()) {
     occupancyRate,
     groupTypeCounts,
     optionCounts,
+    regionBreakdown: countBy(bookings.map((b) => b.region)),
+    purposeBreakdown: countBy(bookings.map((b) => b.purpose)),
+    popularWeekdays,
+    popularDates,
+    avgSatisfaction,
+    surveyResponseCount,
+    reviewStats: {
+      published: publishedReviewCount ?? 0,
+      unpublished: unpublishedReviewCount ?? 0,
+    },
   };
 }

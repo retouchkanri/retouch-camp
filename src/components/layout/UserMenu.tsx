@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 type Profile = {
   full_name: string | null;
   avatar_url: string | null;
+  role: string | null;
 };
 
 export function UserMenu() {
@@ -30,7 +31,7 @@ export function UserMenu() {
 
       const { data } = await supabase
         .from("profiles")
-        .select("full_name, avatar_url")
+        .select("full_name, avatar_url, role")
         .eq("id", user.id)
         .single();
 
@@ -68,6 +69,7 @@ export function UserMenu() {
   }
 
   const displayName = profile?.full_name?.trim() || "ゲスト";
+  const isStaff = profile?.role === "admin" || profile?.role === "staff";
 
   return (
     <div className="relative" ref={menuRef}>
@@ -119,6 +121,19 @@ export function UserMenu() {
           >
             プロフィール編集
           </Link>
+          {isStaff && (
+            <>
+              <div role="separator" className="my-1 border-t border-gold/20" />
+              <Link
+                href="/admin"
+                role="menuitem"
+                onClick={() => setOpen(false)}
+                className="block px-4 py-2.5 font-serif text-sm text-charcoal transition-colors hover:bg-cream-dark hover:text-terracotta"
+              >
+                管理者ダッシュボード
+              </Link>
+            </>
+          )}
           <button
             type="button"
             role="menuitem"

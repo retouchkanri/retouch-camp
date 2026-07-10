@@ -62,7 +62,12 @@ export default async function BookingCompletePage({
           </div>
         )}
 
-        <div className="mt-10">
+        <div className="mt-10 flex flex-wrap justify-center gap-4">
+          {booking && (
+            <LinkButton href={`/booking/payment/${booking.cancel_token}`} variant="primary">
+              お支払いについて
+            </LinkButton>
+          )}
           <LinkButton href="/" variant="secondary">
             トップページへ戻る
           </LinkButton>

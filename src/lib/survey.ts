@@ -41,7 +41,7 @@ export async function sendSurveyForBooking(bookingId: string) {
 
   const survey = await ensureSurveyForBooking(bookingId);
 
-  await sendEmail({
+  const { sent } = await sendEmail({
     to: (booking as Booking).customer_email,
     subject: "【Retouch Horse Garden】ご滞在はいかがでしたか？アンケートのお願い",
     html: emailLayout(
@@ -52,12 +52,16 @@ export async function sendSurveyForBooking(bookingId: string) {
     ),
   });
 
-  await supabase
-    .from("surveys")
-    .update({ sent_at: new Date().toISOString() })
-    .eq("id", survey.id);
+  // Only mark as sent when the email actually went out — otherwise the cron
+  // would treat the booking as done and the guest would never get a survey.
+  if (sent) {
+    await supabase
+      .from("surveys")
+      .update({ sent_at: new Date().toISOString() })
+      .eq("id", survey.id);
+  }
 
-  return survey;
+  return { survey, sent };
 }
 
 export async function getSurveyByToken(token: string) {
