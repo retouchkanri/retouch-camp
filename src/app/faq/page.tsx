@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { FaqAccordion } from "@/components/sections/FaqAccordion";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = { title: "FAQ" };
 
@@ -42,14 +43,7 @@ const FAQS = [
 export default function FaqPage() {
   return (
     <>
-      <section className="bg-forest-dark text-cream">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-5 py-16 sm:px-8 sm:py-24">
-          <p className="text-xs tracking-[0.2em] text-terracotta uppercase">FAQ</p>
-          <h1 className="max-w-2xl font-serif text-3xl leading-snug font-semibold sm:text-4xl">
-            よくある質問
-          </h1>
-        </div>
-      </section>
+      <PageHero eyebrow="FAQ" title="よくある質問" />
 
       <Section tone="cream">
         <SectionHeading title="ご予約・キャンセルについて" />

@@ -59,13 +59,13 @@ export default async function AdminCalendarPage({
         <div className="flex gap-2">
           <Link
             href={`/admin/calendar?month=${prevParam}`}
-            className="rounded-full border border-sage/30 px-4 py-1.5 text-sm text-charcoal-soft"
+            className="rounded-2xl border border-sage/30 px-4 py-1.5 text-sm text-charcoal-soft"
           >
             ← 前月
           </Link>
           <Link
             href={`/admin/calendar?month=${nextParam}`}
-            className="rounded-full border border-sage/30 px-4 py-1.5 text-sm text-charcoal-soft"
+            className="rounded-2xl border border-sage/30 px-4 py-1.5 text-sm text-charcoal-soft"
           >
             翌月 →
           </Link>

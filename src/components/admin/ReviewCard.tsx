@@ -43,7 +43,7 @@ export function ReviewCard({ review }: { review: Review }) {
           <p className="mt-3 text-xs font-medium text-forest-dark">{review.display_name}</p>
         </div>
         <span
-          className={`flex-shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
+          className={`flex-shrink-0 rounded-2xl px-3 py-1 text-xs font-medium ${
             review.published ? "bg-green-100 text-green-800" : "bg-gray-200 text-gray-600"
           }`}
         >

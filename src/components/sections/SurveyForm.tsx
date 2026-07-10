@@ -96,7 +96,7 @@ export function SurveyForm({ token }: { token: string }) {
           {REVISIT_OPTIONS.map((opt) => (
             <label
               key={opt}
-              className={`cursor-pointer rounded-full border px-4 py-2 text-sm ${
+              className={`cursor-pointer rounded-2xl border px-4 py-2 text-sm ${
                 revisit === opt
                   ? "border-terracotta bg-terracotta/10 text-terracotta-dark"
                   : "border-sage/30 text-charcoal-soft"

@@ -74,31 +74,40 @@ export function UserMenu() {
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
-        className="flex items-center gap-2 rounded-full py-1 pr-1 pl-1 transition-colors hover:bg-sage/10"
+        className="group relative flex items-center gap-2 rounded-xl py-1 pr-1 pl-1 transition-colors hover:bg-sage/10"
         aria-expanded={open}
         aria-haspopup="menu"
+        aria-label={displayName}
       >
-        <span className="max-w-[8rem] truncate text-sm text-charcoal">{displayName}</span>
-        <span className="h-9 w-9 flex-shrink-0 overflow-hidden rounded-full bg-sage/20">
+        <span className="relative h-9 w-9 flex-shrink-0 overflow-hidden rounded-full bg-sage/20">
           {profile?.avatar_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={profile.avatar_url} alt="" className="h-full w-full object-cover" />
           ) : (
             <span className="flex h-full w-full items-center justify-center text-base text-sage">🐴</span>
           )}
+          <span
+            role="tooltip"
+            className="pointer-events-none absolute top-full left-1/2 z-50 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-forest-dark px-2.5 py-1 text-xs text-cream opacity-0 shadow-md transition-opacity group-hover:opacity-100 lg:hidden"
+          >
+            {displayName}
+          </span>
+        </span>
+        <span className="hidden max-w-[8rem] truncate font-serif text-sm text-charcoal lg:inline">
+          {displayName}
         </span>
       </button>
 
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-xl border border-sage/20 bg-white py-1 shadow-lg"
+          className="absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-xl border border-gold/30 bg-white py-1 shadow-lg"
         >
           <Link
             href="/mypage"
             role="menuitem"
             onClick={() => setOpen(false)}
-            className="block px-4 py-2.5 text-sm text-charcoal transition-colors hover:bg-cream-dark hover:text-terracotta"
+            className="block px-4 py-2.5 font-serif text-sm text-charcoal transition-colors hover:bg-cream-dark hover:text-terracotta"
           >
             マイページ
           </Link>
@@ -106,7 +115,7 @@ export function UserMenu() {
             href="/mypage#profile"
             role="menuitem"
             onClick={() => setOpen(false)}
-            className="block px-4 py-2.5 text-sm text-charcoal transition-colors hover:bg-cream-dark hover:text-terracotta"
+            className="block px-4 py-2.5 font-serif text-sm text-charcoal transition-colors hover:bg-cream-dark hover:text-terracotta"
           >
             プロフィール編集
           </Link>
@@ -114,7 +123,7 @@ export function UserMenu() {
             type="button"
             role="menuitem"
             onClick={handleLogout}
-            className="block w-full px-4 py-2.5 text-left text-sm text-charcoal transition-colors hover:bg-cream-dark hover:text-terracotta"
+            className="block w-full px-4 py-2.5 text-left font-serif text-sm text-charcoal transition-colors hover:bg-cream-dark hover:text-terracotta"
           >
             ログアウト
           </button>

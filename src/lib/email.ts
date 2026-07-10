@@ -28,7 +28,7 @@ export async function sendEmail(opts: { to: string; subject: string; html: strin
 export function emailLayout(title: string, bodyHtml: string) {
   return `<!doctype html>
 <html lang="ja"><body style="font-family:'Hiragino Sans',sans-serif;background:#ffffff;padding:32px;color:#2b2620;">
-  <div style="max-width:480px;margin:0 auto;background:#ffffff;border:1px solid #f2f6f2;border-radius:16px;overflow:hidden;">
+  <div style="max-width:480px;margin:0 auto;background:#ffffff;border:1px solid #f2f6f2;border-radius:8px;overflow:hidden;">
     <div style="background:#2f4536;color:#ffffff;padding:24px 32px;">
       <p style="margin:0;font-size:12px;letter-spacing:0.1em;color:#3f8a4a;">RETOUCH HORSE GARDEN</p>
       <h1 style="margin:8px 0 0;font-size:20px;">${title}</h1>

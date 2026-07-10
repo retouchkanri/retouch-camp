@@ -86,7 +86,7 @@ export default async function AdminSurveysPage() {
             {s.ai_tags && s.ai_tags.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-2">
                 {s.ai_tags.map((tag) => (
-                  <span key={tag} className="rounded-full bg-sage/10 px-3 py-1 text-xs text-forest">
+                  <span key={tag} className="rounded-2xl bg-sage/10 px-3 py-1 text-xs text-forest">
                     #{tag}
                   </span>
                 ))}

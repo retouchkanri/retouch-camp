@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { MAIN_NAV, FACILITY_NAME, FACILITY_NAME_JA } from "@/lib/nav";
+import { MAIN_NAV } from "@/lib/nav";
 import { createClient } from "@/lib/supabase/client";
+import { SiteLogoLink } from "./SiteLogo";
 import { UserMenu } from "./UserMenu";
 
 export function Header() {
@@ -24,19 +25,14 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-sage/20 bg-cream/95 backdrop-blur">
       <div className="flex w-full items-center justify-between px-[5vw] py-4">
-        <Link href="/" className="flex flex-col leading-tight" onClick={() => setOpen(false)}>
-          <span className="font-serif text-lg font-semibold text-forest-dark sm:text-xl">
-            {FACILITY_NAME}
-          </span>
-          <span className="text-[11px] tracking-wide text-charcoal-soft">{FACILITY_NAME_JA}</span>
-        </Link>
+        <SiteLogoLink onClick={() => setOpen(false)} />
 
         <nav className="hidden items-center gap-6 lg:flex">
           {MAIN_NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`text-sm transition-colors hover:text-terracotta ${
+              className={`font-serif text-sm transition-colors hover:text-terracotta ${
                 pathname === item.href ? "font-semibold text-terracotta" : "text-charcoal"
               }`}
             >
@@ -51,7 +47,7 @@ export function Header() {
           ) : (
             <Link
               href="/login"
-              className="text-sm text-charcoal transition-colors hover:text-terracotta"
+              className="font-serif text-sm text-charcoal transition-colors hover:text-terracotta"
             >
               ログイン
             </Link>
@@ -86,7 +82,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className={`rounded-lg px-3 py-2.5 text-sm ${
+                className={`rounded-lg px-3 py-2.5 font-serif text-sm ${
                   pathname === item.href
                     ? "bg-forest/10 font-semibold text-terracotta"
                     : "text-charcoal"
@@ -99,7 +95,7 @@ export function Header() {
               <Link
                 href="/login"
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-2.5 text-sm text-charcoal"
+                className="rounded-lg px-3 py-2.5 font-serif text-sm text-charcoal"
               >
                 ログイン
               </Link>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { LinkButton } from "@/components/ui/Button";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = { title: "サイト案内" };
 
@@ -34,17 +35,11 @@ const FACILITIES = [
 export default function SitesPage() {
   return (
     <>
-      <section className="bg-forest-dark text-cream">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-5 py-16 sm:px-8 sm:py-24">
-          <p className="text-xs tracking-[0.2em] text-terracotta uppercase">Sites</p>
-          <h1 className="max-w-2xl font-serif text-3xl leading-snug font-semibold sm:text-4xl">
-            サイト案内
-          </h1>
-          <p className="max-w-xl text-sm leading-relaxed text-cream/80 sm:text-base">
-            キャンピングカーサイトとフリーサイトの2種類。1日4組限定なので、それぞれのサイトを広々とお使いいただけます。
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Sites"
+        title="サイト案内"
+        description="キャンピングカーサイトとフリーサイトの2種類。1日4組限定なので、それぞれのサイトを広々とお使いいただけます。"
+      />
 
       <Section tone="white">
         <div className="grid gap-8 lg:grid-cols-2">

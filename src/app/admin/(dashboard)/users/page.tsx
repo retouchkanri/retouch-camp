@@ -34,7 +34,7 @@ export default async function AdminUsersPage({
         </div>
         <Link
           href="/admin/users/new"
-          className="rounded-full bg-terracotta px-5 py-2.5 text-sm font-medium text-white hover:bg-terracotta-dark"
+          className="rounded-2xl bg-terracotta px-5 py-2.5 text-sm font-medium text-white hover:bg-terracotta-dark"
         >
           ユーザーを追加
         </Link>
@@ -45,7 +45,7 @@ export default async function AdminUsersPage({
           <Link
             key={tab.value}
             href={tab.value === "all" ? "/admin/users" : `/admin/users?role=${tab.value}`}
-            className={`rounded-full border px-4 py-1.5 text-sm ${
+            className={`rounded-2xl border px-4 py-1.5 text-sm ${
               (activeRole ?? "all") === tab.value
                 ? "border-terracotta bg-terracotta/10 text-terracotta-dark"
                 : "border-sage/30 text-charcoal-soft"

@@ -13,13 +13,16 @@ export function Section({
 }) {
   const toneClass =
     tone === "forest"
-      ? "bg-forest text-cream"
+      ? "bg-mist text-forest-dark"
       : tone === "white"
         ? "bg-white text-charcoal"
         : "bg-cream text-charcoal";
 
   return (
-    <section id={id} className={`${toneClass} py-16 sm:py-24 ${className}`}>
+    <section id={id} className={`relative ${toneClass} py-16 sm:py-24 ${className}`}>
+      {tone === "forest" && (
+        <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
+      )}
       <Container>{children}</Container>
     </section>
   );

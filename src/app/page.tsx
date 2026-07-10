@@ -52,29 +52,26 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-forest-dark text-cream">
+      <section className="relative overflow-hidden bg-mist">
+        <span className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
         <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-2 lg:py-28">
           <div>
-            <p className="mb-4 inline-block rounded-full border border-terracotta/60 px-4 py-1 text-xs tracking-[0.2em] text-terracotta uppercase">
+            <p className="mb-4 inline-block rounded-2xl border border-terracotta/60 px-4 py-1 font-serif text-xs tracking-[0.2em] text-terracotta uppercase">
               1日4組限定・完全予約制
             </p>
-            <h1 className="font-serif text-3xl leading-snug font-semibold sm:text-4xl lg:text-5xl">
+            <h1 className="font-serif text-3xl leading-snug font-semibold text-forest-dark sm:text-4xl lg:text-5xl">
               一泊が、
               <br />
               引退馬の未来につながる。
             </h1>
-            <p className="mt-6 max-w-md text-sm leading-relaxed text-cream/80 sm:text-base">
+            <p className="mt-6 max-w-md text-sm leading-relaxed text-charcoal-soft sm:text-base">
               大阪府河内長野市。豊かな緑に囲まれたホースガーデンで、ポニーとのふれあいや餌やり、BBQを楽しむ一泊二日。ここでの滞在は、引退した競走馬たちを支える活動へとつながっています。
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <LinkButton href="/booking" variant="primary">
                 空き状況を見て予約する
               </LinkButton>
-              <LinkButton
-                href="/about"
-                variant="secondary"
-                className="border-cream/50 text-cream hover:bg-cream hover:text-forest-dark"
-              >
+              <LinkButton href="/about" variant="secondary">
                 施設コンセプトを見る
               </LinkButton>
             </div>
@@ -85,7 +82,6 @@ export default async function HomePage() {
             description="緑の牧場を背景に、ゲストとポニーが並んで佇む横長のメイン写真。サイト最上部いっぱいに使用。"
             sourceHint="horserest.jp トップページの放牧シーン、bajigaku.net の馬とのふれあいカット"
             aspect="wide"
-            className="border-cream/30 bg-cream/5"
           />
         </div>
       </section>
@@ -121,11 +117,7 @@ export default async function HomePage() {
               title="ここでの一泊が、引退馬たちの新しい居場所をつくる。"
               description="競走馬としての役目を終えた馬たちは、その後の人生をどう過ごすか、大きな課題を抱えています。Retouch Horse Gardenは、引退馬支援活動「Retouch」とつながる体験型施設。皆さまの宿泊料の一部が、引退馬たちの飼養・リトレーニング費用として活用されます。"
             />
-            <LinkButton
-              href="/retouch"
-              variant="secondary"
-              className="border-cream text-cream hover:bg-cream hover:text-forest-dark"
-            >
+            <LinkButton href="/retouch" variant="secondary">
               Retouchの取り組みを見る →
             </LinkButton>
           </div>
@@ -134,7 +126,6 @@ export default async function HomePage() {
             description="引退馬を優しくケアするスタッフの様子。物語性が伝わる情緒的な一枚。"
             sourceHint="retouch.salon / retouch.news に掲載されている引退馬支援活動の写真"
             aspect="video"
-            className="border-cream/30 bg-cream/5"
           />
         </div>
       </Section>
@@ -245,7 +236,7 @@ export default async function HomePage() {
           <h2 className="font-serif text-2xl font-semibold sm:text-3xl">
             1日4組限定。空いているうちにご予約ください。
           </h2>
-          <p className="max-w-xl text-sm leading-relaxed text-cream/80">
+          <p className="max-w-xl text-sm leading-relaxed text-charcoal-soft">
             ご希望日の空き状況はご予約ページからすぐに確認できます。ご不明な点はお問い合わせフォームからお気軽にどうぞ。
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -254,7 +245,7 @@ export default async function HomePage() {
             </LinkButton>
             <Link
               href="/faq"
-              className="text-sm text-cream/80 underline underline-offset-4 hover:text-cream"
+              className="font-serif text-sm text-charcoal-soft underline underline-offset-4 hover:text-terracotta"
             >
               よくある質問を見る
             </Link>

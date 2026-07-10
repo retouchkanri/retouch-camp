@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { LinkButton } from "@/components/ui/Button";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = { title: "施設コンセプト" };
 
@@ -23,19 +24,17 @@ const PILLARS = [
 export default function AboutPage() {
   return (
     <>
-      <section className="bg-forest-dark text-cream">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 py-16 sm:px-8 sm:py-24">
-          <p className="text-xs tracking-[0.2em] text-terracotta uppercase">Concept</p>
-          <h1 className="max-w-2xl font-serif text-3xl leading-snug font-semibold sm:text-4xl">
+      <PageHero
+        eyebrow="Concept"
+        title={
+          <>
             馬と、人と、緑と。
             <br />
             ここにしかない時間を。
-          </h1>
-          <p className="max-w-xl text-sm leading-relaxed text-cream/80 sm:text-base">
-            Retouch Horse Gardenは、大阪府河内長野市の豊かな自然の中にある、1日4組限定の体験型ホースキャンプ施設です。単なる宿泊施設ではなく、馬たちとの出会いと、引退馬支援という社会的な取り組みをつなぐ場所として運営しています。
-          </p>
-        </div>
-      </section>
+          </>
+        }
+        description="Retouch Horse Gardenは、大阪府河内長野市の豊かな自然の中にある、1日4組限定の体験型ホースキャンプ施設です。単なる宿泊施設ではなく、馬たちとの出会いと、引退馬支援という社会的な取り組みをつなぐ場所として運営しています。"
+      />
 
       <Section tone="cream">
         <ImagePlaceholder
@@ -87,9 +86,9 @@ export default function AboutPage() {
             label="スタッフ紹介写真"
             description="馬と並んで立つスタッフのポートレート写真。"
             aspect="square"
-            className="max-w-xs border-cream/30 bg-cream/5"
+            className="max-w-xs"
           />
-          <p className="max-w-xl text-sm leading-relaxed text-cream/80">
+          <p className="max-w-xl text-sm leading-relaxed text-charcoal-soft">
             「馬たちのセカンドキャリアを、多くの方に知っていただきたい」という想いから、この施設を始めました。ここでの体験を通じて、引退馬という存在をもっと身近に感じていただけたら嬉しいです。
           </p>
         </div>

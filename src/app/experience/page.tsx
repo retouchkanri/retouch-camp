@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { LinkButton } from "@/components/ui/Button";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = { title: "馬と過ごす体験" };
 
@@ -43,17 +44,11 @@ const EXPERIENCES = [
 export default function ExperiencePage() {
   return (
     <>
-      <section className="bg-forest-dark text-cream">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-5 py-16 sm:px-8 sm:py-24">
-          <p className="text-xs tracking-[0.2em] text-terracotta uppercase">Experience</p>
-          <h1 className="max-w-2xl font-serif text-3xl leading-snug font-semibold sm:text-4xl">
-            馬と過ごす体験
-          </h1>
-          <p className="max-w-xl text-sm leading-relaxed text-cream/80 sm:text-base">
-            滞在中は、ポニーとのふれあいから餌やり、記念撮影、BBQまで、さまざまな体験をお選びいただけます。ご予約時にオプションとしてお申し込みください。
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Experience"
+        title="馬と過ごす体験"
+        description="滞在中は、ポニーとのふれあいから餌やり、記念撮影、BBQまで、さまざまな体験をお選びいただけます。ご予約時にオプションとしてお申し込みください。"
+      />
 
       <Section tone="white">
         <div className="flex flex-col gap-16">
@@ -70,10 +65,10 @@ export default function ExperiencePage() {
                   {exp.title}
                 </h2>
                 <div className="mt-3 flex flex-wrap gap-3 text-xs">
-                  <span className="rounded-full bg-terracotta/10 px-3 py-1 font-medium text-terracotta-dark">
+                  <span className="rounded-2xl bg-terracotta/10 px-3 py-1 font-medium text-terracotta-dark">
                     {exp.price}
                   </span>
-                  <span className="rounded-full bg-sage/10 px-3 py-1 font-medium text-forest">
+                  <span className="rounded-2xl bg-sage/10 px-3 py-1 font-medium text-forest">
                     {exp.duration}
                   </span>
                 </div>

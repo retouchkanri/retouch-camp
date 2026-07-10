@@ -337,7 +337,7 @@ export function BookingForm({
             {GROUP_TYPES.map((g) => (
               <label
                 key={g.value}
-                className={`cursor-pointer rounded-full border px-4 py-2 text-sm ${
+                className={`cursor-pointer rounded-2xl border px-4 py-2 text-sm ${
                   groupType === g.value
                     ? "border-terracotta bg-terracotta/10 text-terracotta-dark"
                     : "border-sage/30 text-charcoal-soft"
@@ -374,7 +374,7 @@ export function BookingForm({
             {DESIRED_EXPERIENCES.map((label) => (
               <label
                 key={label}
-                className={`cursor-pointer rounded-full border px-4 py-2 text-sm ${
+                className={`cursor-pointer rounded-2xl border px-4 py-2 text-sm ${
                   desiredExperience.includes(label)
                     ? "border-terracotta bg-terracotta/10 text-terracotta-dark"
                     : "border-sage/30 text-charcoal-soft"
@@ -430,7 +430,7 @@ export function BookingForm({
             {REPEAT_INTENTIONS.map((r) => (
               <label
                 key={r.value}
-                className={`cursor-pointer rounded-full border px-4 py-2 text-sm ${
+                className={`cursor-pointer rounded-2xl border px-4 py-2 text-sm ${
                   repeatIntention === r.value
                     ? "border-terracotta bg-terracotta/10 text-terracotta-dark"
                     : "border-sage/30 text-charcoal-soft"
@@ -461,9 +461,9 @@ export function BookingForm({
       </fieldset>
 
       {/* Summary + submit */}
-      <div className="rounded-2xl bg-forest-dark p-6 text-cream">
+      <div className="rounded-2xl border-t-2 border-gold/60 bg-forest-dark p-6 text-cream">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-cream/80">お支払い予定金額（税込）</span>
+          <span className="font-serif text-sm text-cream/80">お支払い予定金額（税込）</span>
           <span className="font-serif text-2xl font-semibold">{totalPrice.toLocaleString()}円</span>
         </div>
         <p className="mt-1 text-xs text-cream/60">お支払いは当日現地にてお願いいたします。</p>

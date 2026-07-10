@@ -22,7 +22,7 @@ export function BackToTopButton() {
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       aria-label="ページの上部に戻る"
       tabIndex={visible ? 0 : -1}
-      className={`fixed right-6 bottom-6 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-forest-dark text-cream shadow-lg transition-all duration-300 hover:bg-terracotta ${
+      className={`fixed right-6 bottom-6 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-gold/40 bg-white text-forest-dark shadow-lg transition-all duration-300 hover:border-terracotta hover:text-terracotta ${
         visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
       }`}
     >

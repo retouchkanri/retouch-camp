@@ -1,25 +1,28 @@
 import Link from "next/link";
-import { LINE_URL } from "@/lib/nav";
 
-const buttonClass =
-  "flex w-28 items-center justify-center rounded-l-md bg-red-600 px-4 py-3 text-sm font-semibold text-white shadow-md transition-colors hover:bg-red-700";
+const sharedClass =
+  "shine-sweep relative flex h-44 w-16 items-center justify-center overflow-hidden rounded-l-md text-base font-semibold text-white font-serif shadow-lg transition-colors";
+
+const LINE_LETTERS = ["L", "I", "N", "E"] as const;
 
 export function FloatingActionButtons() {
-  const lineHref = LINE_URL || "/contact";
-
   return (
-    <div className="fixed top-1/2 right-0 z-50 flex -translate-y-1/2 flex-col gap-1">
-      <Link href="/booking" className={buttonClass}>
+    <div className="fixed top-1/2 right-0 z-50 flex -translate-y-1/2 flex-col gap-1.5">
+      <Link
+        href="/booking"
+        className={`${sharedClass} bg-red-600 tracking-widest hover:bg-red-700 [writing-mode:vertical-rl]`}
+      >
         予約する
       </Link>
-      <a
-        href={lineHref}
-        target={LINE_URL ? "_blank" : undefined}
-        rel={LINE_URL ? "noopener noreferrer" : undefined}
-        className={buttonClass}
-      >
-        LINE
-      </a>
+      <Link href="/line" className={`${sharedClass} bg-[#06C755] hover:bg-[#05A94A]`}>
+        <span className="flex flex-col items-center gap-3 leading-none">
+          {LINE_LETTERS.map((char) => (
+            <span key={char} className="block w-full text-center">
+              {char}
+            </span>
+          ))}
+        </span>
+      </Link>
     </div>
   );
 }

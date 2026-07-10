@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Section, SectionHeading } from "@/components/ui/Section";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = { title: "安全ルール" };
 
@@ -47,17 +48,11 @@ const RULE_GROUPS = [
 export default function RulesPage() {
   return (
     <>
-      <section className="bg-forest-dark text-cream">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-5 py-16 sm:px-8 sm:py-24">
-          <p className="text-xs tracking-[0.2em] text-terracotta uppercase">Safety Rules</p>
-          <h1 className="max-w-2xl font-serif text-3xl leading-snug font-semibold sm:text-4xl">
-            安全ルール
-          </h1>
-          <p className="max-w-xl text-sm leading-relaxed text-cream/80 sm:text-base">
-            馬たちと安全に、気持ちよく過ごしていただくために、以下のルールを必ずお守りください。ご予約時に同意をいただいております。
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Safety Rules"
+        title="安全ルール"
+        description="馬たちと安全に、気持ちよく過ごしていただくために、以下のルールを必ずお守りください。ご予約時に同意をいただいております。"
+      />
 
       <Section tone="white">
         <div className="grid gap-10 sm:grid-cols-2">

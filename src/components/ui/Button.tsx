@@ -10,7 +10,7 @@ const VARIANT_CLASS: Record<Variant, string> = {
 };
 
 const BASE =
-  "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50";
+  "inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3 font-serif text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50";
 
 export function LinkButton({
   href,

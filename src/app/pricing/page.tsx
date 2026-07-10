@@ -1,23 +1,18 @@
 import type { Metadata } from "next";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { LinkButton } from "@/components/ui/Button";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = { title: "料金案内" };
 
 export default function PricingPage() {
   return (
     <>
-      <section className="bg-forest-dark text-cream">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-5 py-16 sm:px-8 sm:py-24">
-          <p className="text-xs tracking-[0.2em] text-terracotta uppercase">Pricing</p>
-          <h1 className="max-w-2xl font-serif text-3xl leading-snug font-semibold sm:text-4xl">
-            料金案内
-          </h1>
-          <p className="max-w-xl text-sm leading-relaxed text-cream/80 sm:text-base">
-            ※以下は仮の料金設定です。実際の金額に置き換えてご利用ください（管理者ダッシュボードから変更できます）。
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Pricing"
+        title="料金案内"
+        description="※以下は仮の料金設定です。実際の金額に置き換えてご利用ください（管理者ダッシュボードから変更できます）。"
+      />
 
       <Section tone="white">
         <SectionHeading eyebrow="Site Fee" title="サイト利用料（1泊）" />

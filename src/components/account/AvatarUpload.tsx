@@ -80,7 +80,7 @@ export function AvatarUpload({ userId, avatarUrl }: { userId: string; avatarUrl:
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={status === "uploading"}
-          className="rounded-full border border-sage/40 px-4 py-2 text-sm text-forest-dark hover:border-terracotta"
+          className="rounded-2xl border border-sage/40 px-4 py-2 text-sm text-forest-dark hover:border-terracotta"
         >
           {status === "uploading" ? "アップロード中…" : "画像を変更"}
         </button>

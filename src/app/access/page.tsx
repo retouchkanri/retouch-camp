@@ -1,23 +1,18 @@
 import type { Metadata } from "next";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { Section, SectionHeading } from "@/components/ui/Section";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = { title: "アクセス" };
 
 export default function AccessPage() {
   return (
     <>
-      <section className="bg-forest-dark text-cream">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-5 py-16 sm:px-8 sm:py-24">
-          <p className="text-xs tracking-[0.2em] text-terracotta uppercase">Access</p>
-          <h1 className="max-w-2xl font-serif text-3xl leading-snug font-semibold sm:text-4xl">
-            アクセス
-          </h1>
-          <p className="max-w-xl text-sm leading-relaxed text-cream/80 sm:text-base">
-            大阪府河内長野市。大阪市内から車で約40分の里山エリアにあります。
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Access"
+        title="アクセス"
+        description="大阪府河内長野市。大阪市内から車で約40分の里山エリアにあります。"
+      />
 
       <Section tone="white">
         <div className="grid gap-10 lg:grid-cols-2">

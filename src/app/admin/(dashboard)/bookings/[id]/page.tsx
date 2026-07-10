@@ -26,7 +26,7 @@ export default async function AdminBookingDetailPage({
           </p>
         </div>
         <span
-          className={`rounded-full px-4 py-1.5 text-sm font-medium ${STATUS_BADGE_CLASS[booking.status]}`}
+          className={`rounded-2xl px-4 py-1.5 text-sm font-medium ${STATUS_BADGE_CLASS[booking.status]}`}
         >
           {STATUS_LABEL_JA[booking.status]}
         </span>

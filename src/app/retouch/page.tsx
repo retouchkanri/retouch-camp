@@ -1,23 +1,18 @@
 import type { Metadata } from "next";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { Section, SectionHeading } from "@/components/ui/Section";
+import { PageHero } from "@/components/layout/PageHero";
 
 export const metadata: Metadata = { title: "引退馬支援活動とのつながり" };
 
 export default function RetouchPage() {
   return (
     <>
-      <section className="bg-forest-dark text-cream">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-5 py-16 sm:px-8 sm:py-24">
-          <p className="text-xs tracking-[0.2em] text-terracotta uppercase">Retouch</p>
-          <h1 className="max-w-2xl font-serif text-3xl leading-snug font-semibold sm:text-4xl">
-            引退馬支援活動「Retouch」との、つながり
-          </h1>
-          <p className="max-w-xl text-sm leading-relaxed text-cream/80 sm:text-base">
-            Retouch Horse Gardenは、引退馬支援活動「Retouch」の運営母体が手がける体験型施設です。ここでの一泊が、そのまま馬たちの未来を支える力になります。
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Retouch"
+        title="引退馬支援活動「Retouch」との、つながり"
+        description="Retouch Horse Gardenは、引退馬支援活動「Retouch」の運営母体が手がける体験型施設です。ここでの一泊が、そのまま馬たちの未来を支える力になります。"
+      />
 
       <Section tone="white">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">

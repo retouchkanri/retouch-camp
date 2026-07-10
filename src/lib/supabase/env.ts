@@ -1,5 +1,9 @@
-function readEnv(name: string): string | undefined {
-  const value = process.env[name];
+// NOTE: Next.js/Turbopack only inlines NEXT_PUBLIC_* vars into the client bundle
+// when they're accessed as a static `process.env.NEXT_PUBLIC_X` expression — a
+// dynamic `process.env[name]` lookup is NOT replaced and evaluates to `undefined`
+// in the browser. Keep these as literal, non-computed property accesses.
+
+function clean(value: string | undefined): string | undefined {
   if (!value) return undefined;
   const trimmed = value.trim();
   return trimmed.length > 0 ? trimmed : undefined;
@@ -15,19 +19,28 @@ function isValidHttpUrl(value: string | undefined): value is string {
   }
 }
 
+function rawSupabaseUrl(): string | undefined {
+  return clean(process.env.NEXT_PUBLIC_SUPABASE_URL);
+}
+
+function rawSupabaseAnonKey(): string | undefined {
+  return clean(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+}
+
+function rawSupabaseServiceRoleKey(): string | undefined {
+  return clean(process.env.SUPABASE_SERVICE_ROLE_KEY);
+}
+
 export function isSupabaseConfigured(): boolean {
-  return (
-    isValidHttpUrl(readEnv("NEXT_PUBLIC_SUPABASE_URL")) &&
-    !!readEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
-  );
+  return isValidHttpUrl(rawSupabaseUrl()) && !!rawSupabaseAnonKey();
 }
 
 export function isSupabaseAdminConfigured(): boolean {
-  return isSupabaseConfigured() && !!readEnv("SUPABASE_SERVICE_ROLE_KEY");
+  return isSupabaseConfigured() && !!rawSupabaseServiceRoleKey();
 }
 
 export function getSupabaseUrl(): string {
-  const url = readEnv("NEXT_PUBLIC_SUPABASE_URL");
+  const url = rawSupabaseUrl();
   if (!isValidHttpUrl(url)) {
     throw new Error(
       "Missing or invalid NEXT_PUBLIC_SUPABASE_URL. Set a valid https:// URL in your environment variables.",
@@ -37,7 +50,7 @@ export function getSupabaseUrl(): string {
 }
 
 export function getSupabaseAnonKey(): string {
-  const key = readEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY");
+  const key = rawSupabaseAnonKey();
   if (!key) {
     throw new Error(
       "Missing NEXT_PUBLIC_SUPABASE_ANON_KEY. Set it in your environment variables.",
@@ -47,7 +60,7 @@ export function getSupabaseAnonKey(): string {
 }
 
 export function getSupabaseServiceRoleKey(): string {
-  const key = readEnv("SUPABASE_SERVICE_ROLE_KEY");
+  const key = rawSupabaseServiceRoleKey();
   if (!key) {
     throw new Error(
       "Missing SUPABASE_SERVICE_ROLE_KEY. Set it in your environment variables.",

@@ -15,7 +15,7 @@ export function AdminMobileNav() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex-shrink-0 rounded-full border px-3 py-1.5 text-xs ${
+            className={`flex-shrink-0 rounded-2xl border px-3 py-1.5 text-xs ${
               active ? "border-terracotta bg-terracotta/10 text-terracotta-dark" : "border-sage/30 text-charcoal-soft"
             }`}
           >

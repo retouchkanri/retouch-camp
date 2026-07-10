@@ -32,7 +32,7 @@ export default async function AdminBookingsPage({
           <Link
             key={tab.value}
             href={tab.value === "all" ? "/admin/bookings" : `/admin/bookings?status=${tab.value}`}
-            className={`rounded-full border px-4 py-1.5 text-sm ${
+            className={`rounded-2xl border px-4 py-1.5 text-sm ${
               (activeStatus ?? "all") === tab.value
                 ? "border-terracotta bg-terracotta/10 text-terracotta-dark"
                 : "border-sage/30 text-charcoal-soft"
@@ -78,7 +78,7 @@ export default async function AdminBookingsPage({
                 <td className="px-5 py-3 text-charcoal-soft">{b.total_price.toLocaleString()}円</td>
                 <td className="px-5 py-3">
                   <span
-                    className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_BADGE_CLASS[b.status]}`}
+                    className={`rounded-2xl px-3 py-1 text-xs font-medium ${STATUS_BADGE_CLASS[b.status]}`}
                   >
                     {STATUS_LABEL_JA[b.status]}
                   </span>

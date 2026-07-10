@@ -67,7 +67,7 @@ export default async function MyPage() {
                       {b.total_price.toLocaleString()}円
                     </span>
                     <span
-                      className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_BADGE_CLASS[b.status]}`}
+                      className={`rounded-2xl px-3 py-1 text-xs font-medium ${STATUS_BADGE_CLASS[b.status]}`}
                     >
                       {STATUS_LABEL_JA[b.status]}
                     </span>
